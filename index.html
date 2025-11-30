@@ -93,19 +93,23 @@
             </div>
 
             <!-- Navigation -->
-            <div class="flex justify-between items-center">
-                <button @click="prevQuestion" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-lg transition duration-300">
+            <div class="navigation-grid">
+                <button @click="prevQuestion" class="nav-button px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-lg transition duration-300 text-center">
                     <i class="fas fa-arrow-left mr-2"></i> Zurück
                 </button>
-                
-                <div class="text-center">
-                    <button @click="skipQuestion" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-lg transition duration-300">
-                        Überspringen <i class="fas fa-fast-forward ml-2"></i>
-                    </button>
-                </div>
-                
-                <button @click="nextQuestion" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition duration-300">
+
+                <button @click="skipQuestion" class="nav-button skip-button px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-lg transition duration-300 text-center">
+                    Überspringen <i class="fas fa-fast-forward ml-2"></i>
+                </button>
+
+                <button @click="nextQuestion" class="nav-button px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition duration-300 text-center">
                     Weiter <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+
+                <div class="navigation-separator" aria-hidden="true"></div>
+
+                <button @click="restartSequence" class="nav-button restart-button px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-lg transition duration-300 text-center">
+                    <i class="fas fa-redo mr-2"></i> Neue Runde starten
                 </button>
             </div>
         </div>
@@ -203,12 +207,6 @@
             </div>
         </div>
 
-        <!-- Optionen -->
-        <div class="mt-8 flex flex-wrap justify-center gap-4">
-            <button @click="restartSequence" class="px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-lg transition duration-300">
-                <i class="fas fa-redo mr-2"></i> Neue Runde starten
-            </button>
-        </div>
     </div>
 
     <!-- Vue.js -->

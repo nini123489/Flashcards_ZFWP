@@ -47,3 +47,59 @@
 .segment-unanswered {
   background-color: #e5e7eb; /* grau für noch unbeantwortet */
 }
+
+
+.navigation-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+
+.navigation-grid .nav-button {
+  flex: 1 1 100%;
+}
+
+.navigation-grid .nav-button:not(.skip-button):not(.restart-button) {
+  flex-basis: calc(50% - 0.5rem);
+}
+
+.navigation-grid .skip-button {
+  order: -1; 
+}
+
+.navigation-grid .restart-button {
+  order: 1;
+}
+
+.navigation-grid .navigation-separator {
+  flex-basis: 100%;
+  height: 1px;
+  background-color: #e5e7eb;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .navigation-grid {
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .navigation-grid .nav-button:not(.restart-button),
+  .navigation-grid .nav-button:not(.skip-button):not(.restart-button),
+  .navigation-grid .skip-button {
+    flex: 0 0 auto;
+    order: initial;
+  }
+
+  .navigation-grid .restart-button {
+    flex: 1 1 100%;
+    align-self: stretch;
+    order: initial;
+  }
+
+  .navigation-grid .navigation-separator {
+    margin: 0.75rem 0 0;
+  }
+}
