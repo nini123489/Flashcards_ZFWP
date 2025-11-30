@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary purpose of a firewall?",
+    "answer": "To monitor and control incoming and outgoing network traffic based on predetermined security rules",
+    "explanation": "A firewall acts as a security barrier between trusted and untrusted networks, filtering traffic to prevent unauthorized access.",
+    "topic": "Network Security",
+    "difficulty": 0
+  },
+  {
+    "id": 2,
+    "question": "Which OSI model layer is responsible for routing?",
+    "answer": "Layer 3 (Network Layer)",
+    "explanation": "The Network Layer (Layer 3) handles logical addressing and routing of data packets between different networks.",
+    "topic": "Networking Fundamentals",
+    "difficulty": 0
+  },
+  {
+    "id": 3,
+    "question": "What does CSS stand for?",
+    "answer": "Cascading Style Sheets",
+    "explanation": "CSS is a style sheet language used to describe the presentation of a document written in HTML or XML.",
+    "topic": "Web Development",
+    "difficulty": 0
+  },
+  {
+    "id": 4,
+    "question": "Which HTTP status code indicates successful request processing?",
+    "answer": "200 OK",
+    "explanation": "The 200 OK status code indicates that the request has succeeded and the server has returned the requested data.",
+    "topic": "Web Technologies",
+    "difficulty": 0
+  },
+  {
+    "id": 5,
+    "question": "What is the main advantage of using a database index?",
+    "answer": "To improve query performance by quickly locating data",
+    "explanation": "Database indexes provide faster access to data by creating a structured lookup table that allows the database engine to find rows more efficiently.",
+    "topic": "Database Management",
+    "difficulty": 0
+  },
+  {
+    "id": 6,
+    "question": "What does TCP stand for?",
+    "answer": "Transmission Control Protocol",
+    "explanation": "TCP is a core protocol of the Internet protocol suite that ensures reliable, ordered delivery of data between applications.",
+    "topic": "Networking",
+    "difficulty": 0
+  },
+  {
+    "id": 7,
+    "question": "What is the purpose of the 'git commit' command?",
+    "answer": "To save changes to the repository with a descriptive message",
+    "explanation": "The git commit command records changes made to files in the repository along with a message describing what was changed.",
+    "topic": "Version Control",
+    "difficulty": 0
+  },
+  {
+    "id": 8,
+    "question": "Which HTML tag is used to define an internal style sheet?",
+    "answer": "<style>",
+    "explanation": "The <style> tag is used to define internal CSS styles within an HTML document.",
+    "topic": "HTML/CSS",
+    "difficulty": 0
+  }
+]

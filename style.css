@@ -1,0 +1,49 @@
+/* Zusätzliche Styles für die Karteikartenanwendung */
+
+/* Karteneffekte */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Animierte Leiste – die Breite wird im Code berechnet */
+.progress-bar {
+  transition: width 0.5s ease;
+}
+
+/* Container für die Karteikarte */
+.flashcard-container {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Anzeige der Anzahl der Antworten pro Kategorie */
+.difficulty-indicator {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  margin: 0.25rem;
+}
+
+/* Farbdefinitionen für Fortschrittssegmente */
+.segment-excellent {
+  background-color: #34d399; /* grün für ausgezeichnet */
+}
+.segment-good {
+  background-color: #3b82f6; /* blau für gut */
+}
+.segment-fair {
+  background-color: #fbbf24; /* gelb für okay */
+}
+.segment-poor {
+  background-color: #f87171; /* rot für schlecht */
+}
+.segment-unanswered {
+  background-color: #e5e7eb; /* grau für noch unbeantwortet */
+}
