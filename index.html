@@ -149,6 +149,11 @@
                                 Thema: {{ currentQuestion.topic }}
                             </span>
                         </div>
+                        <div v-if="currentQuestion && hasAnsweredCurrentQuestion && !roundLocked" class="mb-4">
+                            <span :class="['round-status-badge', currentRoundAnswerRating ? 'round-status-' + currentRoundAnswerRating : 'round-status-unknown']">
+                                Bereits beantwortet ({{ difficultyLabel(currentRoundAnswerRating) }})
+                            </span>
+                        </div>
                         <div v-if="roundLocked" class="mb-6">
                             <h3 class="text-2xl font-bold text-gray-800 mb-4">Runde abgeschlossen 🎉</h3>
                             <p class="text-gray-700 mb-6">Du hast alle {{ roundQuestionTarget }} Fragen dieser Runde beantwortet. Starte eine neue Runde, um weiter zu üben.</p>

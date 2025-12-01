@@ -33,6 +33,7 @@ new Vue({
     },
     roundAnswered: [],
     roundQuestionTarget: 0,
+    roundAnsweredRatings: {},
     roundLocked: false,
     questionStats: [],
     activeOrder: [],
@@ -77,6 +78,22 @@ new Vue({
     },
     accuracy() {
       return this.stats.total > 0 ? Math.round((this.stats.correct / this.stats.total) * 100) : 0;
+    },
+    currentQuestionPoolIndex() {
+      if (!this.activeOrder.length || this.currentQuestionIndex < 0 || this.currentQuestionIndex >= this.activeOrder.length) {
+        return null;
+      }
+      return this.activeOrder[this.currentQuestionIndex];
+    },
+    hasAnsweredCurrentQuestion() {
+      const poolIndex = this.currentQuestionPoolIndex;
+      if (poolIndex === null || poolIndex === undefined) return false;
+      return this.roundAnswered.includes(poolIndex);
+    },
+    currentRoundAnswerRating() {
+      const poolIndex = this.currentQuestionPoolIndex;
+      if (poolIndex === null || poolIndex === undefined) return null;
+      return this.roundAnsweredRatings[poolIndex] || null;
     }
   },
   methods: {
@@ -227,6 +244,7 @@ new Vue({
     resetRoundTracking() {
       this.roundQuestionTarget = this.activeOrder.length;
       this.roundAnswered = [];
+      this.roundAnsweredRatings = {};
       this.roundStats = {
         total: 0,
         excellent: 0,
@@ -244,6 +262,7 @@ new Vue({
       if (isFirstAnswer) {
         this.roundAnswered.push(questionIndex);
       }
+      this.$set(this.roundAnsweredRatings, questionIndex, difficulty);
       if (!this.roundCompletionNotified && isFirstAnswer) {
         this.roundStats.total++;
         if (this.roundStats.hasOwnProperty(difficulty)) {
@@ -349,6 +368,16 @@ new Vue({
     skipQuestion() {
       if (this.roundLocked) return;
       this.rateAnswer('excellent');
+    },
+    difficultyLabel(level) {
+      const labels = {
+        excellent: 'Ausgezeichnet',
+        good: 'Gut',
+        fair: 'Okay',
+        poor: 'Schlecht'
+      };
+      if (!level || !labels[level]) return 'Unbekannt';
+      return labels[level];
     },
     saveState() {
       this.lastActivityDate = this.getTodayString();
