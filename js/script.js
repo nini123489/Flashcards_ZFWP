@@ -24,6 +24,15 @@ new Vue({
       fair: 0,
       poor: 0
     },
+    roundStats: {
+      total: 0,
+      excellent: 0,
+      good: 0,
+      fair: 0,
+      poor: 0
+    },
+    roundAnswered: [],
+    roundQuestionTarget: 0,
     questionStats: [],
     activeOrder: [],
     showStats: false,
@@ -34,7 +43,10 @@ new Vue({
     pendingQuestions: null,
     updateMessage: '',
     showInfoModal: false,
-    lastActivityDate: null
+    lastActivityDate: null,
+    showRoundCompleteModal: false,
+    confettiPieces: [],
+    roundCompletionNotified: false
   },
   computed: {
     currentQuestion() {
@@ -160,12 +172,7 @@ new Vue({
           lastRating: qs.lastRating || 'unanswered',
           score: qs.score
         };
-        if (typeof merged.score !== 'number') {
-          const positiveScore = merged.excellent * 3 + merged.good * 2;
-          const negativeScore = merged.fair * 1 + merged.poor * 2;
-          const penalty = merged.total * 0.5;
-          merged.score = positiveScore - negativeScore - penalty;
-        }
+        merged.score = this.calculateQuestionScore(merged);
         return merged;
       });
 
@@ -202,11 +209,66 @@ new Vue({
         score: 0
       };
     },
+    calculateQuestionScore(stat) {
+      if (!stat) return 0;
+      const penaltyRelevantAnswers = stat.total - stat.good;
+      const positiveScore = stat.excellent * 3;
+      const negativeScore = stat.fair * 1 + stat.poor * 2;
+      const penalty = Math.max(0, penaltyRelevantAnswers) * 0.5;
+      return positiveScore - negativeScore - penalty;
+    },
     shuffleActiveOrder() {
       for (let i = this.activeOrder.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [this.activeOrder[i], this.activeOrder[j]] = [this.activeOrder[j], this.activeOrder[i]];
       }
+    },
+    resetRoundTracking() {
+      this.roundQuestionTarget = this.activeOrder.length;
+      this.roundAnswered = [];
+      this.roundStats = {
+        total: 0,
+        excellent: 0,
+        good: 0,
+        fair: 0,
+        poor: 0
+      };
+      this.showRoundCompleteModal = false;
+      this.roundCompletionNotified = false;
+      this.confettiPieces = [];
+    },
+    recordRoundProgress(questionIndex, difficulty) {
+      const isFirstAnswer = !this.roundAnswered.includes(questionIndex);
+      if (isFirstAnswer) {
+        this.roundAnswered.push(questionIndex);
+      }
+      if (!this.roundCompletionNotified && isFirstAnswer) {
+        this.roundStats.total++;
+        if (this.roundStats.hasOwnProperty(difficulty)) {
+          this.roundStats[difficulty]++;
+        }
+        if (this.roundQuestionTarget > 0 && this.roundAnswered.length >= this.roundQuestionTarget) {
+          this.triggerRoundComplete();
+        }
+      }
+    },
+    triggerRoundComplete() {
+      if (this.roundCompletionNotified) return;
+      this.roundCompletionNotified = true;
+      this.showRoundCompleteModal = true;
+      this.generateConfetti();
+    },
+    generateConfetti() {
+      const pieces = 24;
+      const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa'];
+      this.confettiPieces = Array.from({ length: pieces }, (_, idx) => ({
+        id: idx,
+        left: Math.random() * 100,
+        delay: Math.random() * 0.5,
+        duration: 2 + Math.random() * 1.5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: 6 + Math.random() * 6
+      }));
     },
     toggleAnswer() {
       this.showAnswer = !this.showAnswer;
@@ -219,10 +281,7 @@ new Vue({
       qs[difficulty]++;
       qs.total++;
       qs.lastRating = difficulty;
-      const positiveScore = qs.excellent * 3 + qs.good * 2;
-      const negativeScore = qs.fair * 1 + qs.poor * 2;
-      const penalty = qs.total * 0.5;
-      qs.score = positiveScore - negativeScore - penalty;
+      qs.score = this.calculateQuestionScore(qs);
       this.stats.total++;
       if (['excellent', 'good'].includes(difficulty)) {
         this.stats.correct++;
@@ -232,6 +291,7 @@ new Vue({
       this.stats[difficulty]++;
       this.evaluateMastery(questionIndex);
       this.answerHistory.push(difficulty);
+      this.recordRoundProgress(questionIndex, difficulty);
       this.saveState();
       this.nextQuestion();
     },
@@ -276,7 +336,7 @@ new Vue({
       this.saveState();
     },
     skipQuestion() {
-      this.nextQuestion();
+      this.rateAnswer('excellent');
     },
     saveState() {
       this.lastActivityDate = this.getTodayString();
@@ -344,6 +404,7 @@ new Vue({
       this.currentQuestionIndex = 0;
       this.showAnswer = false;
       this.answerHistory = [];
+      this.resetRoundTracking();
       this.saveState();
     },
     reintroduceQuestion(qIndex) {
@@ -398,6 +459,7 @@ new Vue({
       this.currentQuestionIndex = 0;
       this.showAnswer = false;
       this.answerHistory = [];
+      this.resetRoundTracking();
       this.saveState();
     },
     toggleStats() {
@@ -407,6 +469,13 @@ new Vue({
     toggleQuestionList() {
       this.showQuestionList = !this.showQuestionList;
       this.saveState();
+    },
+    closeRoundCompleteModal() {
+      this.showRoundCompleteModal = false;
+    },
+    startNewRoundFromModal() {
+      this.showRoundCompleteModal = false;
+      this.restartSequence();
     },
     openInfoModal() {
       this.showInfoModal = true;

@@ -66,6 +66,53 @@
                 </div>
             </div>
         </div>
+        <div v-if="showRoundCompleteModal" class="update-modal-backdrop" @click.self="closeRoundCompleteModal">
+            <div class="update-modal celebration-modal">
+                <div class="confetti-wrapper" aria-hidden="true">
+                    <span
+                        v-for="piece in confettiPieces"
+                        :key="piece.id"
+                        class="confetti-piece"
+                        :style="{
+                            left: piece.left + '%',
+                            animationDelay: piece.delay + 's',
+                            animationDuration: piece.duration + 's',
+                            width: piece.size + 'px',
+                            height: (piece.size * 2) + 'px',
+                            backgroundColor: piece.color
+                        }">
+                    </span>
+                </div>
+                <div class="text-center relative z-10">
+                    <div class="text-5xl mb-2" aria-hidden="true">🎉</div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Runde abgeschlossen!</h3>
+                    <p class="text-gray-600">Du hast alle {{ roundQuestionTarget }} Fragen dieser Runde geschafft.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mt-6 mb-6 relative z-10">
+                    <div class="p-3 bg-green-50 rounded text-center">
+                        <div class="text-2xl font-bold text-green-600">{{ roundStats.excellent }}</div>
+                        <div class="text-sm text-gray-600">Ausgezeichnet</div>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded text-center">
+                        <div class="text-2xl font-bold text-blue-600">{{ roundStats.good }}</div>
+                        <div class="text-sm text-gray-600">Gut</div>
+                    </div>
+                    <div class="p-3 bg-yellow-50 rounded text-center">
+                        <div class="text-2xl font-bold text-yellow-600">{{ roundStats.fair }}</div>
+                        <div class="text-sm text-gray-600">Okay</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded text-center">
+                        <div class="text-2xl font-bold text-red-600">{{ roundStats.poor }}</div>
+                        <div class="text-sm text-gray-600">Schlecht</div>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center relative z-10">
+                    <button @click="startNewRoundFromModal" class="px-5 py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg transition">
+                        Neue Runde starten
+                    </button>
+                </div>
+            </div>
+        </div>
         <header class="text-center mb-10">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">ZFWP Karteikarten</h1>
             <p class="text-gray-600">Alle Fragen und Antworten ohne Gewähr</p>
