@@ -33,7 +33,8 @@ new Vue({
     pendingFingerprint: null,
     pendingQuestions: null,
     updateMessage: '',
-    showInfoModal: false
+    showInfoModal: false,
+    lastActivityDate: null
   },
   computed: {
     currentQuestion() {
@@ -125,6 +126,7 @@ new Vue({
       }
       this.initializeStatsAndOrder();
       this.loadState();
+      this.applyDailyDecay();
       if (!Array.isArray(this.activeOrder) || this.activeOrder.length === 0) {
         this.questionStats.forEach(stat => { stat.mastered = false; });
         this.activeOrder = this.questions.map((_, idx) => idx);
@@ -277,6 +279,7 @@ new Vue({
       this.nextQuestion();
     },
     saveState() {
+      this.lastActivityDate = this.getTodayString();
       localStorage.setItem('currentQuestionIndex', this.currentQuestionIndex);
       localStorage.setItem('stats', JSON.stringify(this.stats));
       localStorage.setItem('questionStats', JSON.stringify(this.questionStats));
@@ -284,6 +287,7 @@ new Vue({
       localStorage.setItem('showStats', this.showStats);
       localStorage.setItem('showQuestionList', this.showQuestionList);
       localStorage.setItem('answerHistory', JSON.stringify(this.answerHistory));
+      localStorage.setItem('lastActivityDate', this.lastActivityDate);
     },
     loadState() {
       const savedIndexStr = localStorage.getItem('currentQuestionIndex');
@@ -315,6 +319,10 @@ new Vue({
             this.answerHistory = parsedHist;
           }
         } catch (e) {}
+      }
+      const lastActivity = localStorage.getItem('lastActivityDate');
+      if (lastActivity) {
+        this.lastActivityDate = lastActivity;
       }
       if (this.currentQuestionIndex >= this.activeOrder.length) {
         this.currentQuestionIndex = 0;
@@ -455,6 +463,43 @@ new Vue({
         return Array.isArray(parsed) ? parsed : null;
       } catch (e) {
         return null;
+      }
+    },
+    applyDailyDecay() {
+      const today = this.getTodayString();
+      if (!this.lastActivityDate) {
+        this.lastActivityDate = today;
+        return;
+      }
+      const diffDays = this.calculateDayDifference(this.lastActivityDate, today);
+      if (diffDays <= 0) {
+        this.lastActivityDate = today;
+        return;
+      }
+      const penalty = diffDays * 0.5;
+      this.questionStats.forEach(stat => {
+        if (!stat) return;
+        if (typeof stat.score !== 'number') {
+          stat.score = 0;
+        }
+        stat.score -= penalty;
+      });
+      this.lastActivityDate = today;
+    },
+    getTodayString() {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      return now.toISOString().split('T')[0];
+    },
+    calculateDayDifference(startDateStr, endDateStr) {
+      if (!startDateStr || !endDateStr) return 0;
+      try {
+        const start = new Date(`${startDateStr}T00:00:00`);
+        const end = new Date(`${endDateStr}T00:00:00`);
+        const diffMs = end.getTime() - start.getTime();
+        return diffMs > 0 ? Math.floor(diffMs / (1000 * 60 * 60 * 24)) : 0;
+      } catch (e) {
+        return 0;
       }
     }
   },
