@@ -31,6 +31,7 @@ new Vue({
     answerHistory: [],
     showUpdateModal: false,
     pendingFingerprint: null,
+    pendingQuestions: null,
     updateMessage: '',
     showInfoModal: false
   },
@@ -66,29 +67,61 @@ new Vue({
   },
   methods: {
     async loadQuestions() {
-      let loaded = false;
+      const cachedQuestions = this.getCachedQuestions();
+      let questionsToUse = Array.isArray(cachedQuestions) && cachedQuestions.length ? cachedQuestions : null;
+      const storedFingerprint = localStorage.getItem('questionsFingerprint');
+      let latestQuestions = null;
+      let shouldPersistCurrent = false;
+      let fingerprintToPersist = null;
+
       try {
         const response = await fetch('data/questions.json');
         if (response.ok) {
           const data = await response.json();
-          this.questions = Array.isArray(data) ? data : [];
-          loaded = this.questions.length > 0;
+          if (Array.isArray(data) && data.length) {
+            latestQuestions = data;
+          }
         }
-      } catch (e) {console.warn('Die Fragen konnten nicht aus der Datei geladen werden. Fallback wird verwendet:', e);}
-      if (!loaded) {
-        this.questions = fallbackQuestions;
+      } catch (e) {
+        console.warn('Die Fragen konnten nicht aus der Datei geladen werden. Fallback wird verwendet:', e);
       }
-      const fingerprint = this.generateQuestionsFingerprint(this.questions);
-      const storedFingerprint = localStorage.getItem('questionsFingerprint');
-      if (!storedFingerprint) {
-        localStorage.setItem('questionsFingerprint', fingerprint);
-        this.pendingFingerprint = fingerprint;
-      } else if (storedFingerprint !== fingerprint) {
-        this.showUpdateModal = true;
-        this.updateMessage = 'Auf dem Server liegen aktualisierte Quizfragen. Statistiken können dadurch veraltet sein.';
-        this.pendingFingerprint = fingerprint;
-      } else {
-        this.pendingFingerprint = fingerprint;
+
+      if (latestQuestions && latestQuestions.length) {
+        const latestFingerprint = this.generateQuestionsFingerprint(latestQuestions);
+        if (!storedFingerprint) {
+          questionsToUse = latestQuestions;
+          shouldPersistCurrent = true;
+          fingerprintToPersist = latestFingerprint;
+        } else if (storedFingerprint !== latestFingerprint) {
+          this.pendingQuestions = latestQuestions;
+          this.pendingFingerprint = latestFingerprint;
+          this.showUpdateModal = true;
+          this.updateMessage = 'Auf dem Server liegen aktualisierte Quizfragen. Statistiken können dadurch veraltet sein.';
+          if (!questionsToUse || !questionsToUse.length) {
+            questionsToUse = latestQuestions;
+            shouldPersistCurrent = true;
+            fingerprintToPersist = latestFingerprint;
+          }
+        } else {
+          questionsToUse = latestQuestions;
+          shouldPersistCurrent = true;
+          fingerprintToPersist = latestFingerprint;
+        }
+      }
+
+      if (!questionsToUse) {
+        questionsToUse = fallbackQuestions;
+      }
+
+      this.questions = questionsToUse;
+
+      if (shouldPersistCurrent) {
+        localStorage.setItem('cachedQuestions', JSON.stringify(this.questions));
+        localStorage.setItem('questionsFingerprint', fingerprintToPersist);
+        this.pendingQuestions = null;
+        this.pendingFingerprint = null;
+      } else if (!localStorage.getItem('cachedQuestions')) {
+        localStorage.setItem('cachedQuestions', JSON.stringify(this.questions));
       }
       this.initializeStatsAndOrder();
       this.loadState();
@@ -374,15 +407,28 @@ new Vue({
       this.showInfoModal = false;
     },
     acknowledgeUpdate(resetStats) {
-      if (resetStats) {
-        this.resetAllQuestions(true);
+      if (this.pendingQuestions) {
+        this.questions = this.pendingQuestions;
+        localStorage.setItem('cachedQuestions', JSON.stringify(this.questions));
       }
       if (this.pendingFingerprint) {
         localStorage.setItem('questionsFingerprint', this.pendingFingerprint);
       }
       this.showUpdateModal = false;
-      this.pendingFingerprint = null;
       this.updateMessage = '';
+      if (resetStats) {
+        this.resetAllQuestions(true);
+      } else {
+        this.initializeStatsAndOrder();
+        this.loadState();
+        if (!Array.isArray(this.activeOrder) || this.activeOrder.length === 0) {
+          this.questionStats.forEach(stat => { stat.mastered = false; });
+          this.activeOrder = this.questions.map((_, idx) => idx);
+        }
+        this.restartSequence();
+      }
+      this.pendingQuestions = null;
+      this.pendingFingerprint = null;
     },
     postponeUpdate() {
       this.showUpdateModal = false;
@@ -400,6 +446,16 @@ new Vue({
           topic: q.topic
         }))
       );
+    },
+    getCachedQuestions() {
+      const cached = localStorage.getItem('cachedQuestions');
+      if (!cached) return null;
+      try {
+        const parsed = JSON.parse(cached);
+        return Array.isArray(parsed) ? parsed : null;
+      } catch (e) {
+        return null;
+      }
     }
   },
   mounted() {
