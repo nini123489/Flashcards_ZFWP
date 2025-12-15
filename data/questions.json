@@ -60,7 +60,7 @@
     "question": "Welche Schwächungsmechanismen wirken in Körpern auf Röntgenstrahlung?",
     "answer": "Photoabsorption, Compton-Streuung, Paarbildung sowie die Raylieghstreuung.",
     "explanation": "Bei der Photoabsorption (Photoeffekt) wird das Photon vollständig von einem gebundenen Elektron absorbiert und seine Energie auf dieses übertragen; dieser Prozess dominiert bei niedrigen Photonenergien und Materialien mit hoher Ordnungszahl. Die Compton-Streuung ist eine inelastische Streuung an (fast) freien Elektronen, bei der das Photon Energie abgibt und in eine andere Richtung gestreut wird; sie ist im mittleren Energiebereich typisch und führt zu Kontrastverlust durch Streustrahlung. Die Paarbildung tritt erst oberhalb einer Schwelle von 1,022 MeV auf, wenn ein Photon im Coulombfeld des Atomkerns in ein Elektron-Positron-Paar umgewandelt wird und so vollständig verschwindet. Rayleighstreuung ist eine elastische Streuung mit nur Richtungsänderung des Photons ohne Energieverlust, sie trägt ebenfalls zur Gesamtabschwächung und Streustrahlungsbelastung bei, ist aber energetisch wenig wirksam.",
-    "topic": "Röntgenphysik",
+    "topic": "Röntgenprüfung",
     "difficulty": 0
   },
   {
@@ -124,7 +124,7 @@
     "question": "Warum lassen sich Neutronen- und Röntgenprüfung gut vergleichen?",
     "answer": "Weil beide bildgebende Durchstrahlungsverfahren sind, aber auf unterschiedlichen Wechselwirkungen mit Materie beruhen.",
     "explanation": "Sowohl Röntgen- als auch Neutronenprüfung erzeugen Durchstrahlungsbilder, unterscheiden sich jedoch fundamental in ihrem physikalischen Kontrastmechanismus. Röntgenstrahlung wechselwirkt mit der Elektronenhülle und ist stark abhängig von Ordnungszahl und Dichte, während Neutronen überwiegend mit Atomkernen wechselwirken und besonders empfindlich auf leichte Elemente wie Wasserstoff reagieren. Dadurch liefern beide Verfahren komplementäre Informationen über denselben Prüfkörper.",
-    "topic": "Vergleichende Prüfverfahren",
+    "topic": "Prüfverfahren",
     "difficulty": 0
   },
   {
@@ -132,7 +132,7 @@
     "question": "Wo finden die Wechselwirkungen bei der Neutronentomographie statt?",
     "answer": "Die Wechselwirkungen finden hauptsächlich im Atomkern statt.",
     "explanation": "Neutronen sind elektrisch neutral und wechselwirken daher kaum mit der Elektronenhülle. Stattdessen treten ihre Wechselwirkungen überwiegend mit den Atomkernen auf, etwa durch Streuung oder Absorption. Dadurch ist der Kontrast stark isotopen- und materialabhängig und unterscheidet sich grundlegend von der Röntgenbildgebung.",
-    "topic": "Neutronenphysik",
+    "topic": "Neutronentomographie",
     "difficulty": 0
   },
   {
@@ -140,7 +140,7 @@
     "question": "Wo finden die Wechselwirkungen bei der Röntgenprüfung statt?",
     "answer": "Die Wechselwirkungen finden hauptsächlich in der Elektronenhülle der Atome statt.",
     "explanation": "Röntgenstrahlung wechselwirkt überwiegend mit den Elektronen der Atomhülle, insbesondere durch Photoeffekt, Compton-Streuung und Rayleigh-Streuung. Der resultierende Bildkontrast hängt daher stark von der Ordnungszahl und der Elektronendichte des Materials ab, weshalb Metalle mit hoher Ordnungszahl Röntgenstrahlung deutlich stärker schwächen als leichte Materialien.",
-    "topic": "Röntgenphysik",
+    "topic": "Röntgenprüfung",
     "difficulty": 0
   }
 ]
