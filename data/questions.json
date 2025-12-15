@@ -102,6 +102,46 @@
   "explanation": "Artefakte entstehen durch physikalische Effekte wie Streustrahlung,... sowie durch geometrische Probleme wie Bewegungen, falsche Kalibrierung oder limitierte Rekonstruktionsalgorithmen. Sie äußern sich etwa als Streifen, Schatten, Verzerrungen oder Ringstrukturen im CT-Bild und erschweren die richtige Interpretation des Bauteils, obwohl sie keine realen Materialfehler darstellen.",
   "topic": "Tomographie",
   "difficulty": 0
+  },
+  {
+  "id": 14,
+  "question": "Was ist die Fehlertrompete?",
+  "answer": "Die Fehlertrompete beschreibt den zulässigen Bereich der Längenmessabweichung E in Abhängigkeit von der Messlänge L.",
+  "explanation": "In Anlehnung an die VDI/VDE 2617 wird die Längenmessabweichung E über der Messlänge L dargestellt. Der zulässige Grenzwert beginnt beim Grundwert A und steigt linear mit zunehmender Messlänge an, beschrieben durch die maximale zulässige Messabweichung MPE_E = A + L/K. Dadurch entsteht eine trompetenförmige Hüllkurve, innerhalb derer alle Messabweichungen liegen müssen, damit das Messsystem normgerecht arbeitet.",
+  "topic": "Messtechnik",
+  "difficulty": 0
+  },
+  {
+  "id": 15,
+  "question": "Warum gibt es bei der Neutronentomographie keine Direktvergrößerung?",
+  "answer": "Bei der Neutronentomographie werden nahezu parallele Strahlen eingesetzt, wodurch keine geometrische Vergrößerung entsteht.",
+  "explanation": "Die Neutronenstrahlung trifft den Prüfkörper nahezu parallel. Dadurch bleibt der Abbildungsmaßstab unabhängig vom Abstand zwischen Objekt und Detektor konstant. Im Gegensatz zur Röntgenprüfung mit kegelförmigem Strahlverlauf ist somit keine geometrische Direktvergrößerung möglich, da sich der Strahl nicht auffächert.",
+  "topic": "Neutronentomographie",
+  "difficulty": 0
+  },
+  {
+    "id": 16,
+    "question": "Warum lassen sich Neutronen- und Röntgenprüfung gut vergleichen?",
+    "answer": "Weil beide bildgebende Durchstrahlungsverfahren sind, aber auf unterschiedlichen Wechselwirkungen mit Materie beruhen.",
+    "explanation": "Sowohl Röntgen- als auch Neutronenprüfung erzeugen Durchstrahlungsbilder, unterscheiden sich jedoch fundamental in ihrem physikalischen Kontrastmechanismus. Röntgenstrahlung wechselwirkt mit der Elektronenhülle und ist stark abhängig von Ordnungszahl und Dichte, während Neutronen überwiegend mit Atomkernen wechselwirken und besonders empfindlich auf leichte Elemente wie Wasserstoff reagieren. Dadurch liefern beide Verfahren komplementäre Informationen über denselben Prüfkörper.",
+    "topic": "Vergleichende Prüfverfahren",
+    "difficulty": 0
+  },
+  {
+    "id": 17,
+    "question": "Wo finden die Wechselwirkungen bei der Neutronentomographie statt?",
+    "answer": "Die Wechselwirkungen finden hauptsächlich im Atomkern statt.",
+    "explanation": "Neutronen sind elektrisch neutral und wechselwirken daher kaum mit der Elektronenhülle. Stattdessen treten ihre Wechselwirkungen überwiegend mit den Atomkernen auf, etwa durch Streuung oder Absorption. Dadurch ist der Kontrast stark isotopen- und materialabhängig und unterscheidet sich grundlegend von der Röntgenbildgebung.",
+    "topic": "Neutronenphysik",
+    "difficulty": 0
+  },
+  {
+    "id": 18,
+    "question": "Wo finden die Wechselwirkungen bei der Röntgenprüfung statt?",
+    "answer": "Die Wechselwirkungen finden hauptsächlich in der Elektronenhülle der Atome statt.",
+    "explanation": "Röntgenstrahlung wechselwirkt überwiegend mit den Elektronen der Atomhülle, insbesondere durch Photoeffekt, Compton-Streuung und Rayleigh-Streuung. Der resultierende Bildkontrast hängt daher stark von der Ordnungszahl und der Elektronendichte des Materials ab, weshalb Metalle mit hoher Ordnungszahl Röntgenstrahlung deutlich stärker schwächen als leichte Materialien.",
+    "topic": "Röntgenphysik",
+    "difficulty": 0
   }
-
 ]
+
